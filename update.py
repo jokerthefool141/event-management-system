@@ -1,3 +1,7 @@
+from participants import view_participants
+from events import view_events
+
+
 def update_participant():
     '''
     Updates an existing participant's name and event
@@ -24,7 +28,8 @@ def update_participant():
 
     current = lines[choice - 1].strip().split("|")
     print("Current Name : " + current[0].strip())
-    print("Current Event: " + current[1].strip() + " | " + current[2].strip() + " | " + current[3].strip())
+    print("Current Event: " + current[1].strip() + " | " +
+          current[2].strip() + " | " + current[3].strip())
 
     new_name = input("Enter new participant name: ").strip()
     if not new_name:
@@ -39,7 +44,8 @@ def update_participant():
         return
 
     view_events()
-    new_event_choice = input("Enter the new event number for this participant: ")
+    new_event_choice = input(
+        "Enter the new event number for this participant: ")
     if not new_event_choice.isdigit():
         print("Invalid selection.")
         return
