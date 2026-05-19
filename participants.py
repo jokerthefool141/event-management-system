@@ -1,41 +1,44 @@
-from events import view_events
+import events
+import input_validation as valid
 
 
 def register_participant():
     '''
     Registers a participant to an existing event
     '''
-    with open("events.txt", "r") as file:
-        lines = file.readlines()
+    file = open("events.txt", "r")
+    lines = file.readlines()
+    file.close()
 
     if len(lines) == 0:
         print("No events available.")
         return
 
-    view_events()
+    events.view_events()
 
     choice = input("Enter the event number to register for: ")
 
-    if not choice.isdigit():
-        print("Invalid selection.")
+    if not valid.is_number(choice):
+        print("Invalid event selection.")
         return
 
     choice = int(choice)
 
     if choice < 1 or choice > len(lines):
-        print("Invalid selection.")
+        print("Invalid event selection.")
         return
 
-    participant_name = input("Enter participant name: ")
+    participant_name = input("Enter participant name: ").strip()
 
-    if not participant_name.strip():
+    if not participant_name:
         print("Invalid name.")
         return
 
     selected_event = lines[choice - 1].strip()
 
-    with open("participants.txt", "a") as file:
-        file.write(participant_name + "|" + selected_event + "\n")
+    file = open("participants.txt", "a")
+    file.write(participant_name + "|" + selected_event + "\n")
+    file.close()
 
     print("Participant registered successfully!")
 
@@ -44,17 +47,18 @@ def view_participants():
     '''
     Displays all participants from participants.txt
     '''
-    with open("participants.txt", "r") as file:
-        lines = file.readlines()
+    file = open("participants.txt", "r")
+    lines = file.readlines()
+    file.close()
 
     if len(lines) == 0:
         print("No participants found.")
         return
 
-    print("PARTICIPANT LIST")
+    print("\n===== PARTICIPANT LIST =====\n")
 
-    for i, line in enumerate(lines):
-        line = line.strip()
+    for i in range(len(lines)):
+        line = lines[i].strip()
         parts = line.split("|")
 
         if len(parts) >= 4:

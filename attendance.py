@@ -1,4 +1,5 @@
-from participants import view_participants
+import participants
+import input_validation as valid
 
 
 def delete_participant():
@@ -6,17 +7,18 @@ def delete_participant():
     Deletes an existing participant
     '''
 
-    with open("participants.txt", "r") as file:
-        lines = file.readlines()
+    file = open("participants.txt", "r")
+    lines = file.readlines()
+    file.close()
 
     if len(lines) == 0:
         print("No participants to delete.")
         return
 
-    view_participants()
+    participants.view_participants()
 
     choice = input("Enter the participant number to delete: ")
-    if not choice.isdigit():
+    if not valid.is_number(choice):
         print("Invalid selection.")
         return
 
@@ -27,8 +29,9 @@ def delete_participant():
 
     lines.pop(choice - 1)
 
-    with open("participants.txt", "w") as file:
-        file.writelines(lines)
+    file = open("participants.txt", "w")
+    file.writelines(lines)
+    file.close()
 
     print("Participant deleted successfully!")
 
@@ -38,17 +41,18 @@ def mark_attendance():
     Records attendance of a participant
     '''
 
-    with open("participants.txt", "r") as file:
-        lines = file.readlines()
+    file = open("participants.txt", "r")
+    lines = file.readlines()
+    file.close()
 
     if len(lines) == 0:
         print("No participants available.")
         return
 
-    view_participants()
+    participants.view_participants()
 
     choice = input("Enter the participant number: ")
-    if not choice.isdigit():
+    if not valid.is_number(choice):
         print("Invalid selection.")
         return
 
@@ -65,9 +69,9 @@ def mark_attendance():
         print("Invalid attendance status.")
         return
 
-    with open("attendance.txt", "a") as file:
-        file.write(participant + "|" + status.title() + "\n")
-
+    file = open("attendance.txt", "a")
+    file.write(participant + "|" + status.title() + "\n")
+    file.close()
     print("Attendance recorded successfully!")
 
 
@@ -76,8 +80,9 @@ def view_attendance():
     Displays all attendance records
     '''
 
-    with open("attendance.txt", "r") as file:
-        lines = file.readlines()
+    file = open("attendance.txt", "r")
+    lines = file.readlines()
+    file.close()
 
     if len(lines) == 0:
         print("No attendance records found.")

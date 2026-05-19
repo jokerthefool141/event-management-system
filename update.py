@@ -1,5 +1,6 @@
-from participants import view_participants
-from events import view_events
+import participants
+import events
+import input_validation as valid
 
 
 def update_participant():
@@ -7,17 +8,18 @@ def update_participant():
     Updates an existing participant's name and event
     '''
 
-    with open("participants.txt", "r") as file:
-        lines = file.readlines()
+    file = open("participants.txt", "r")
+    lines = file.readlines()
+    file.close()
 
     if len(lines) == 0:
         print("No participants to update.")
         return
 
-    view_participants()
+    participants.view_participants()
 
     choice = input("Enter the participant number to update: ")
-    if not choice.isdigit():
+    if not valid.is_number(choice):
         print("Invalid selection.")
         return
 
@@ -36,17 +38,19 @@ def update_participant():
         print("Invalid input. Name cannot be empty.")
         return
 
-    with open("events.txt", "r") as file:
-        event_lines = file.readlines()
+    file = open("events.txt", "r")
+    event_lines = file.readlines()
+    file.close()
 
     if len(event_lines) == 0:
         print("No events available to assign.")
         return
 
-    view_events()
+    events.view_events()
+
     new_event_choice = input(
         "Enter the new event number for this participant: ")
-    if not new_event_choice.isdigit():
+    if not valid.is_number(new_event_choice):
         print("Invalid selection.")
         return
 
@@ -59,7 +63,8 @@ def update_participant():
 
     lines[choice - 1] = new_name + "|" + new_event + "\n"
 
-    with open("participants.txt", "w") as file:
-        file.writelines(lines)
+    file = open("participants.txt", "w")
+    file.writelines(lines)
+    file.close()
 
     print("Participant updated successfully!")
