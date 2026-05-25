@@ -1,89 +1,102 @@
+# Importing project modules
+
 import events
 import participants
 import update
 import attendance
-import clear_screen as cls
+import helpers
 
+
+# Main menu function for the Event Management System
 
 def menu():
     while True:
-        print("\n" * 2)
-        print("=" * 55)
-        print("           ==== EVENT MANAGEMENT SYSTEM ====")
-        print("=" * 55)
-        print()
-        print("-" * 55)
-        print("1.) Add Event")
-        print("-" * 55)
-        print("2.) View Events")
-        print("-" * 55)
-        print("3.) Register Participant")
-        print("-" * 55)
-        print("4.) View Participants")
-        print("-" * 55)
-        print("5.) Update Participant")
-        print("-" * 55)
-        print("6.) Delete Participant")
-        print("-" * 55)
-        print("7.) Mark Attendance")
-        print("-" * 55)
-        print("8.) View Attendance")
-        print("-" * 55)
-        print("9.) Clear Screen")
-        print("-" * 55)
-        print("10.) Exit")
-        print("-" * 55)
-        print()
-        print("=" * 55)
-        print()
 
-        choice = input("Enter your choice: ")
-        print()
-        print("=" * 55)
-        print()
+        helpers.new_line(2)
+        helpers.print_title("==== EVENT MANAGEMENT SYSTEM ====")
+
+        print("\n1.) Add Event\n")
+        helpers.print_line()
+
+        print("\n2.) View Events\n")
+        helpers.print_line()
+
+        print("\n3.) Register Participant\n")
+        helpers.print_line()
+
+        print("\n4.) View Participants\n")
+        helpers.print_line()
+
+        print("\n5.) Update Participant\n")
+        helpers.print_line()
+
+        print("\n6.) Delete Participant\n")
+        helpers.print_line()
+
+        print("\n7.) Mark Attendance\n")
+        helpers.print_line()
+
+        print("\n8.) View Attendance\n")
+        helpers.print_line()
+
+        print("\n9.) Clear Screen\n")
+        helpers.print_line()
+
+        print("\n10.) Exit\n")
+
+        helpers.print_separator()
+
+        choice = input("\nEnter your choice: ")
+
+        helpers.new_line()
 
         if choice == "1":
             events.create_event()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "2":
             events.view_events()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "3":
             participants.register_participant()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "4":
             participants.view_participants()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "5":
             update.update_participant()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "6":
             attendance.delete_participant()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "7":
             attendance.mark_attendance()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "8":
             attendance.view_attendance()
-            input("\nPress Enter to continue...")
+            helpers.pause()
 
         elif choice == "9":
-            cls.clear_screen()
+            helpers.clear_screen()
 
         elif choice == "10":
             break
 
         else:
+            helpers.print_separator()
+            helpers.new_line()
             print("Invalid choice. Please try again.")
 
-    print("Exiting the Event Management System. Goodbye!")
+    helpers.print_separator()
+    print("\nExiting the Event Management System. Goodbye!\n")
+    helpers.print_separator()
+    helpers.new_line()
 
 
 if __name__ == "__main__":

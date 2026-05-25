@@ -1,5 +1,5 @@
 import participants
-import input_validation as valid
+import helpers
 
 
 def delete_participant():
@@ -18,11 +18,13 @@ def delete_participant():
     participants.view_participants()
 
     choice = input("Enter the participant number to delete: ")
-    if not valid.is_number(choice):
+
+    if not helpers.is_number(choice):
         print("Invalid selection.")
         return
 
     choice = int(choice)
+
     if choice < 1 or choice > len(lines):
         print("Invalid selection.")
         return
@@ -52,7 +54,7 @@ def mark_attendance():
     participants.view_participants()
 
     choice = input("Enter the participant number: ")
-    if not valid.is_number(choice):
+    if not helpers.is_number(choice):
         print("Invalid selection.")
         return
 
