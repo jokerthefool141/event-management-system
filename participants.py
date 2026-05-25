@@ -124,3 +124,39 @@ def view_participants():
     helpers.print_line()
     helpers.new_line()
     helpers.print_separator()
+
+
+def delete_participant():
+    '''
+    Deletes an existing participant
+    '''
+
+    file = open("participants.txt", "r")
+    lines = file.readlines()
+    file.close()
+
+    if len(lines) == 0:
+        print("No participants to delete.")
+        return
+
+    participants.view_participants()
+
+    choice = input("Enter the participant number to delete: ")
+
+    if not helpers.is_number(choice):
+        print("Invalid selection.")
+        return
+
+    choice = int(choice)
+
+    if choice < 1 or choice > len(lines):
+        print("Invalid selection.")
+        return
+
+    lines.pop(choice - 1)
+
+    file = open("participants.txt", "w")
+    file.writelines(lines)
+    file.close()
+
+    print("Participant deleted successfully!")
