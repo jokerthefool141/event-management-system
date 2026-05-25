@@ -68,3 +68,4 @@ def update_participant():
     file.close()
 
     print("Participant updated successfully!")
+
