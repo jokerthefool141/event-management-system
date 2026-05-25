@@ -69,3 +69,150 @@ def update_participant():
 
     print("Participant updated successfully!")
 
+-----------------
+
+
+# UPDATE EVENT
+
+def update_event():
+    '''
+    Updates an existing event's name, date, and venue
+    '''
+    file = open("events.txt", "r")
+    lines = file.readlines()
+    file.close()
+
+    if len(lines) == 0:
+        print("No events to update.")
+        return
+
+    events.view_events()
+
+    choice = input("Enter the event number to update: ")
+    if not valid.is_number(choice):
+        print("Invalid selection.")
+        return
+
+    choice = int(choice)
+    if choice < 1 or choice > len(lines):
+        print("Invalid selection.")
+        return
+
+    current = lines[choice - 1].strip().split("|")
+    print("Current Event Name : " + current[0].strip())
+    print("Current Date       : " + current[1].strip())
+    print("Current Venue      : " + current[2].strip())
+
+    new_name = input("Enter new event name (or press Enter to keep current): ").strip()
+    if not new_name:
+        new_name = current[0].strip()
+
+    new_date = input("Enter new event date (or press Enter to keep current): ").strip()
+    if not new_date:
+        new_date = current[1].strip()
+
+    new_venue = input("Enter new event venue (or press Enter to keep current): ").strip()
+    if not new_venue:
+        new_venue = current[2].strip()
+
+    lines[choice - 1] = new_name + "|" + new_date + "|" + new_venue + "\n"
+
+    file = open("events.txt", "w")
+    file.writelines(lines)
+    file.close()
+
+    old_event_name = current[0].strip()
+
+    file = open("participants.txt", "r")
+    participant_lines = file.readlines()
+    file.close()
+
+    updated_count = 0
+    i = 0
+    while i < len(participant_lines):
+        parts = participant_lines[i].strip().split("|")
+
+        if len(parts) >= 2 and parts[1].strip() == old_event_name:
+            participant_lines[i] = parts[0].strip() + "|" + new_name + "|" + new_date + "|" + new_venue + "\n"
+            updated_count += 1
+        i += 1
+
+    file = open("participants.txt", "w")
+    file.writelines(participant_lines)
+    file.close()
+
+    print("Event updated successfully!")
+    if updated_count > 0:
+        print(str(updated_count) + " participant(s) linked to this event were also updated.")
+
+
+
+# UPDATE ATTENDANCE
+
+def update_attendance():
+    '''
+    Updates a participant's attendance status (Present / Absent)
+    '''
+    file = open("attendance.txt", "r")
+    lines = file.readlines()
+    file.close()
+
+    if len(lines) == 0:
+        print("No attendance records to update.")
+        return
+
+    print("\n========================================")
+    print("         ATTENDANCE RECORDS")
+    print("========================================")
+    i = 0
+    while i < len(lines):
+        parts = lines[i].strip().split("|")
+        if len(parts) >= 3:
+
+            print(str(i + 1) + ". " + parts[0].strip() +
+                  " | " + parts[1].strip() +
+                  " | Status: " + parts[2].strip())
+        i += 1
+    print("========================================")
+
+    choice = input("Enter the attendance record number to update: ")
+    if not valid.is_number(choice):
+        print("Invalid selection.")
+        return
+
+    choice = int(choice)
+    if choice < 1 or choice > len(lines):
+        print("Invalid selection.")
+        return
+
+    current = lines[choice - 1].strip().split("|")
+    print("Participant : " + current[0].strip())
+    print("Event       : " + current[1].strip())
+    print("Status      : " + current[2].strip())
+
+    print("\nAttendance Status Options:")
+    print("  1. Present")
+    print("  2. Absent")
+
+    status_choice = input("Enter new status (1 or 2): ")
+    if not valid.is_number(status_choice):
+        print("Invalid selection.")
+        return
+
+    status_choice = int(status_choice)
+    if status_choice == 1:
+        new_status = "Present"
+    elif status_choice == 2:
+        new_status = "Absent"
+    else:
+        print("Invalid selection.")
+        return
+
+    lines[choice - 1] = current[0].strip() + "|" + current[1].strip() + "|" + new_status + "\n"
+
+    file = open("attendance.txt", "w")
+    file.writelines(lines)
+    file.close()
+
+    print("Attendance updated successfully!")
+    print(current[0].strip() + " is now marked as " + new_status + ".")
