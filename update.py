@@ -419,6 +419,7 @@ def update_event():
 
 # UPDATE ATTENDANCE
 
+
 def update_attendance():
     '''
     Updates a participant's attendance status (Present / Absent)
