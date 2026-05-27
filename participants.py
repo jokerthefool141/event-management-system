@@ -1,4 +1,3 @@
-import events
 import helpers
 
 
@@ -18,6 +17,7 @@ def register_participant():
         helpers.print_separator()
         return
 
+    import events
     events.view_events()
 
     choice = input("\nEnter the event number to register for: ")
@@ -139,7 +139,7 @@ def delete_participant():
         print("No participants to delete.")
         return
 
-    participants.view_participants()
+    view_participants()
 
     choice = input("Enter the participant number to delete: ")
 
@@ -160,3 +160,48 @@ def delete_participant():
     file.close()
 
     print("Participant deleted successfully!")
+
+
+def participant_menu():
+    while True:
+
+        helpers.new_line(2)
+        helpers.print_title("==== PARTICIPANT MENU ====")
+        helpers.new_line()
+        print("\n1.) Register Participant\n")
+        helpers.print_line()
+        print("\n2.) View Participants\n")
+        helpers.print_line()
+        print("\n3.) Update Participant\n")
+        helpers.print_line()
+        print("\n4.) Delete Participant\n")
+        helpers.print_line()
+        print("\n5.) Back to Main Menu\n")
+        helpers.print_separator()
+
+        choice = input("\nEnter your choice: ").strip()
+        helpers.new_line()
+
+        if choice == "1":
+            register_participant()
+            helpers.pause()
+
+        elif choice == "2":
+            view_participants()
+            helpers.pause()
+
+        elif choice == "3":
+            import update
+            update.update_participant()
+            helpers.pause()
+
+        elif choice == "4":
+            delete_participant()
+            helpers.pause()
+
+        elif choice == "5":
+            break
+
+        else:
+            helpers.print_separator()
+            print("\nInvalid choice. Please try again.")

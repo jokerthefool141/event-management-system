@@ -127,3 +127,47 @@ def delete_event():
 
     print("\nEvent removed successfully!\n")
     helpers.print_separator()
+
+
+def events_menu():
+    while True:
+
+        helpers.new_line(2)
+        helpers.print_title("==== EVENT MENU ====")
+        print("\n1.) Create Event\n")
+        helpers.print_line()
+        print("\n2.) View Events\n")
+        helpers.print_line()
+        print("\n3.) Update Event\n")
+        helpers.print_line()
+        print("\n4.) Delete Event\n")
+        helpers.print_line()
+        print("\n5.) Back to Main Menu\n")
+        helpers.print_separator()
+
+        choice = input("\nEnter your choice: ").strip()
+        helpers.new_line()
+
+        if choice == "1":
+            create_event()
+            helpers.pause()
+
+        elif choice == "2":
+            view_events()
+            helpers.pause()
+
+        elif choice == "3":
+            import update
+            update.update_event()
+            helpers.pause()
+
+        elif choice == "4":
+            delete_event()
+            helpers.pause()
+
+        elif choice == "5":
+            break
+
+        else:
+            helpers.print_separator()
+            print("\nInvalid choice. Please try again.")

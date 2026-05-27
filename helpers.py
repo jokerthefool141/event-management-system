@@ -1,6 +1,6 @@
 import os
 
-WIDTH = 90
+WIDTH = 100
 
 SEPARATOR = "=" * WIDTH
 LINE = "-" * WIDTH
