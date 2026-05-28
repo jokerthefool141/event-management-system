@@ -12,7 +12,7 @@ def menu():
     while True:
 
         helpers.new_line(2)
-        helpers.print_title("==== EVENT MANAGEMENT SYSTEM ====")
+        helpers.print_title("===== EVENT MANAGEMENT SYSTEM =====")
         print("\n1.) Event Menu\n")
         helpers.print_line()
         print("\n2.) Participant Menu\n")

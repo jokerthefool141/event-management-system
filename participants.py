@@ -20,6 +20,9 @@ def register_participant():
     import events
     events.view_events()
 
+    valid_rows = helpers.get_valid_event_rows(lines)
+    valid_indexes = helpers.get_valid_event_indexes(lines)
+
     choice = input("\nEnter the event number to register for: ")
     helpers.new_line()
 
@@ -32,7 +35,7 @@ def register_participant():
 
     choice = int(choice)
 
-    if choice < 1 or choice > len(lines):
+    if choice < 1 or choice > len(valid_rows):
 
         helpers.print_separator()
         print("\nInvalid event selection.\n")
@@ -50,7 +53,16 @@ def register_participant():
         helpers.print_separator()
         return
 
-    selected_event = lines[choice - 1].strip()
+    real_index = valid_indexes[choice - 1]
+
+    selected_event = lines[real_index].strip()
+    selected_parts = selected_event.split("|")
+
+    if len(selected_parts) < 3:
+
+        print("\nSelected event contains invalid/corrupted data.\n")
+        helpers.print_separator()
+        return
 
     file = open("participants.txt", "a")
     file.write(participant_name + "|" + selected_event + "\n")
@@ -74,6 +86,7 @@ def view_participants():
     '''
     Displays all participants from participants.txt
     '''
+
     file = open("participants.txt", "r")
     lines = file.readlines()
     file.close()
@@ -85,7 +98,7 @@ def view_participants():
         helpers.print_separator()
         return
 
-    helpers.print_title("==== PARTICIPANT LIST ====")
+    helpers.print_title("===== PARTICIPANT LIST =====")
     helpers.new_line()
 
     print(
@@ -99,26 +112,34 @@ def view_participants():
     helpers.new_line()
     helpers.print_line()
 
-    for i in range(len(lines)):
-        line = lines[i].strip()
-        parts = line.split("|")
+    valid_rows = helpers.get_valid_participant_rows(lines)
 
-        if len(parts) >= 4:
-            participant_name = parts[0].strip()
-            event_name = parts[1].strip()
-            date = parts[2].strip()
-            venue = parts[3].strip()
+    if len(valid_rows) == 0:
 
-            helpers.new_line()
-            print(
-                helpers.custom_ljust(str(i + 1), 5) +
-                helpers.custom_ljust(participant_name, 25) +
-                helpers.custom_ljust(event_name, 25) +
-                helpers.custom_ljust(date, 20) +
-                helpers.custom_ljust(venue, 20))
+        print("\nNo valid participants found.\n")
+        helpers.print_separator()
+        return
 
-        else:
-            print("\nSkipped invalid data.\n")
+    count = 1
+
+    for parts in valid_rows:
+
+        participant_name = parts[0].strip()
+        event_name = parts[1].strip()
+        date = parts[2].strip()
+        venue = parts[3].strip()
+
+        helpers.new_line()
+
+        print(
+            helpers.custom_ljust(str(count), 5) +
+            helpers.custom_ljust(participant_name, 25) +
+            helpers.custom_ljust(event_name, 25) +
+            helpers.custom_ljust(date, 20) +
+            helpers.custom_ljust(venue, 20)
+        )
+
+        count += 1
 
     helpers.new_line()
     helpers.print_line()
@@ -135,38 +156,101 @@ def delete_participant():
     lines = file.readlines()
     file.close()
 
-    if len(lines) == 0:
-        print("No participants to delete.")
+    valid_rows = helpers.get_valid_participant_rows(lines)
+    valid_indexes = helpers.get_valid_participant_indexes(lines)
+
+    if len(valid_rows) == 0:
+
+        helpers.print_separator()
+        print("\nNo valid participants found.\n")
+        helpers.print_separator()
         return
 
     view_participants()
 
-    choice = input("Enter the participant number to delete: ")
+    choice = input("\nEnter the participant number to delete: ")
+    helpers.new_line()
+    helpers.print_separator()
 
     if not helpers.is_number(choice):
-        print("Invalid selection.")
+
+        print("\nInvalid selection.\n")
+        helpers.print_separator()
         return
 
     choice = int(choice)
 
-    if choice < 1 or choice > len(lines):
-        print("Invalid selection.")
+    if choice < 1 or choice > len(valid_rows):
+
+        print("\nInvalid selection.\n")
+        helpers.print_separator()
         return
 
-    lines.pop(choice - 1)
+    real_index = valid_indexes[choice - 1]
+
+    selected_participant = lines[real_index].strip()
+    participant_parts = selected_participant.split("|")
+
+    if len(participant_parts) < 4:
+
+        print("\nSelected participant contains invalid/corrupted data.\n")
+        helpers.print_separator()
+        return
+
+    participant_name = participant_parts[0].strip()
+    participant_event = participant_parts[1].strip()
+    participant_date = participant_parts[2].strip()
+    participant_venue = participant_parts[3].strip()
+
+    lines.pop(real_index)
 
     file = open("participants.txt", "w")
     file.writelines(lines)
     file.close()
 
-    print("Participant deleted successfully!")
+    # Delete Attendance
+
+    file = open("attendance.txt", "r")
+    attendance_lines = file.readlines()
+    file.close()
+
+    updated_attendance = []
+
+    for line in attendance_lines:
+
+        parts = helpers.split_record(line)
+
+        if len(parts) >= 5:
+
+            atn_event_name = parts[1].strip()
+            atn_date = parts[2].strip()
+            atn_venue = parts[3].strip()
+
+            atn_participant_name = parts[0].strip()
+
+            if not (atn_participant_name == participant_name and
+                    atn_event_name == participant_event and
+                    atn_date == participant_date and
+                    atn_venue == participant_venue):
+
+                updated_attendance.append(line)
+
+        else:
+            updated_attendance.append(line)
+
+    file = open("attendance.txt", "w")
+    file.writelines(updated_attendance)
+    file.close()
+
+    print("\nParticipant deleted successfully!\n")
+    helpers.print_separator()
 
 
 def participant_menu():
     while True:
 
         helpers.new_line(2)
-        helpers.print_title("==== PARTICIPANT MENU ====")
+        helpers.print_title("===== PARTICIPANT MENU =====")
         helpers.new_line()
         print("\n1.) Register Participant\n")
         helpers.print_line()

@@ -1,6 +1,6 @@
 import os
 
-WIDTH = 100
+WIDTH = 120
 
 SEPARATOR = "=" * WIDTH
 LINE = "-" * WIDTH
@@ -91,7 +91,13 @@ def print_title(title):
 # Sorting functions
 
 def get_sort_key(line):
-    return line.split("|")[1]
+
+    parts = line.split("|")
+
+    if len(parts) >= 2:
+        return parts[1]
+
+    return ""
 
 
 def bubble_sort(lines):
@@ -108,3 +114,104 @@ def bubble_sort(lines):
                 temp = lines[j]
                 lines[j] = lines[j + 1]
                 lines[j + 1] = temp
+
+
+# Returns valid rows from the given lines
+
+def get_valid_attendance_rows(lines):
+
+    valid_rows = []
+
+    for line in lines:
+
+        parts = line.rstrip("\n").split("|")
+
+        if len(parts) >= 5:
+
+            valid_rows.append(parts)
+
+    return valid_rows
+
+
+def get_valid_event_rows(lines):
+
+    valid_rows = []
+
+    for line in lines:
+
+        parts = line.strip().split("|")
+
+        if len(parts) >= 3:
+
+            valid_rows.append(parts)
+
+    return valid_rows
+
+
+def get_valid_participant_rows(lines):
+
+    valid_rows = []
+
+    for line in lines:
+
+        parts = line.strip().split("|")
+
+        if len(parts) >= 4:
+
+            valid_rows.append(parts)
+
+    return valid_rows
+
+
+# Returns indexes of valid rows
+
+def get_valid_attendance_indexes(lines):
+
+    valid_indexes = []
+
+    for i in range(len(lines)):
+
+        parts = lines[i].rstrip("\n").split("|")
+
+        if len(parts) >= 5:
+
+            valid_indexes.append(i)
+
+    return valid_indexes
+
+
+def get_valid_event_indexes(lines):
+
+    valid_indexes = []
+
+    for i in range(len(lines)):
+
+        parts = lines[i].strip().split("|")
+
+        if len(parts) >= 3:
+
+            valid_indexes.append(i)
+
+    return valid_indexes
+
+
+def get_valid_participant_indexes(lines):
+
+    valid_indexes = []
+
+    for i in range(len(lines)):
+
+        parts = lines[i].strip().split("|")
+
+        if len(parts) >= 4:
+
+            valid_indexes.append(i)
+
+    return valid_indexes
+
+
+# Splits a text file record into individual fields
+
+def split_record(line):
+
+    return line.strip().split("|")
