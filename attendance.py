@@ -161,7 +161,8 @@ def view_attendance():
             helpers.custom_ljust(record[1], 25) +
             helpers.custom_ljust(record[2], 20) +
             helpers.custom_ljust(record[3], 20) +
-            helpers.custom_ljust(record[4], 15)
+            helpers.custom_ljust(
+                record[4] if record[4].strip() != "" else "No Status", 15)
         )
 
         count += 1
@@ -174,7 +175,7 @@ def view_attendance():
 
 def delete_attendance():
     '''
-    Deletes an attendance record
+    Deletes the attendance status from a record
     '''
 
     file = open("attendance.txt", "r")
@@ -221,6 +222,38 @@ def delete_attendance():
 
     real_index = valid_indexes[choice - 1]
 
+    helpers.new_line()
+    helpers.print_separator()
+
+    print("\nWARNING!")
+    print("You are about to remove the attendance status")
+    print("from this attendance record.\n")
+
+    helpers.print_separator()
+
+    while True:
+
+        confirm = input(
+            "\nAre you sure you want to continue? (yes/no): ").strip().lower()
+
+        helpers.new_line()
+
+        if confirm == "yes":
+            break
+
+        elif confirm == "no":
+
+            helpers.print_separator()
+            print("\nAttendance deletion canceled.\n")
+            helpers.print_separator()
+            return
+
+        else:
+
+            helpers.print_separator()
+            print("\nInvalid input. Please enter 'yes' or 'no' only.\n")
+            helpers.print_separator()
+
     record_parts = lines[real_index].strip().split("|")
 
     if len(record_parts) >= 5:
@@ -242,7 +275,7 @@ def delete_attendance():
     file.close()
 
     helpers.print_separator()
-    print("\nAttendance record deleted successfully!\n")
+    print("\nAttendance status removed successfully!\n")
     helpers.print_separator()
 
 

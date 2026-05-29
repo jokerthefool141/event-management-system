@@ -154,13 +154,20 @@ def update_participant():
                 attendance_venue == old_venue
             ):
 
+                new_event_parts = new_event.split("|")
+
+                new_event_name = new_event_parts[0].strip()
+                new_event_date = new_event_parts[1].strip()
+                new_event_venue = new_event_parts[2].strip()
+
                 attendance_lines[i] = (
                     new_name + "|" +
-                    old_event + "|" +
-                    old_date + "|" +
-                    old_venue + "|" +
+                    new_event_name + "|" +
+                    new_event_date + "|" +
+                    new_event_venue + "|" +
                     attendance_status + "\n"
                 )
+
         i += 1
 
     file = open("attendance.txt", "w")

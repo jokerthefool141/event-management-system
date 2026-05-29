@@ -202,6 +202,39 @@ def delete_participant():
     participant_date = participant_parts[2].strip()
     participant_venue = participant_parts[3].strip()
 
+    helpers.new_line()
+    helpers.print_separator()
+
+    print("\nWARNING!")
+    print("You are about to permanently delete:")
+    print("- The selected participant.")
+    print("- All attendance records related to this participant.\n")
+
+    helpers.print_separator()
+
+    while True:
+
+        confirm = input(
+            "\nAre you sure you want to delete this participant? (yes/no): ").strip().lower()
+
+        helpers.new_line()
+
+        if confirm == "yes":
+            break
+
+        elif confirm == "no":
+
+            helpers.print_separator()
+            print("\nParticipant deletion canceled.\n")
+            helpers.print_separator()
+            return
+
+        else:
+
+            helpers.print_separator()
+            print("\nInvalid input. Please enter 'yes' or 'no' only.\n")
+            helpers.print_separator()
+
     lines.pop(real_index)
 
     file = open("participants.txt", "w")
