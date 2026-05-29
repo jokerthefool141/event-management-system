@@ -209,6 +209,8 @@ def update_participant():
 
         i += 1
 
+    helpers.bubble_sort(attendance_lines)
+
     file = open("attendance.txt", "w")
     file.writelines(attendance_lines)
     file.close()
@@ -335,6 +337,8 @@ def update_event():
             updated_count += 1
 
         i += 1
+
+    helpers.bubble_sort(participant_lines)
 
     file = open("participants.txt", "w")
     file.writelines(participant_lines)
