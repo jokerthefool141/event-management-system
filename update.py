@@ -55,7 +55,7 @@ def update_participant():
     print("\nCurrent Participant : " + current[0].strip())
     helpers.new_line()
     helpers.print_line()
-    print("\nCurrent Event      : " + current[1].strip())
+    print("\nCurrent Event       : " + current[1].strip())
     helpers.new_line()
     helpers.print_line()
     print("\nCurrent Date        : " + current[2].strip())
@@ -118,6 +118,51 @@ def update_participant():
 
     new_event = event_lines[event_real_index].strip()
 
+    already_exists = False
+
+    new_event_parts = new_event.split("|")
+
+    if len(new_event_parts) < 3:
+
+        helpers.print_separator()
+        print("\nSelected event contains invalid/corrupted data.\n")
+        helpers.print_separator()
+        return
+
+    new_event_name = new_event_parts[0].strip()
+    new_event_date = new_event_parts[1].strip()
+    new_event_venue = new_event_parts[2].strip()
+
+    for i in range(len(lines)):
+
+        if i != real_index:
+
+            parts = lines[i].strip().split("|")
+
+            if len(parts) >= 4:
+
+                existing_name = parts[0].strip()
+                existing_event = parts[1].strip()
+                existing_date = parts[2].strip()
+                existing_venue = parts[3].strip()
+
+                if (
+                    existing_name == new_name and
+                    existing_event == new_event_name and
+                    existing_date == new_event_date and
+                    existing_venue == new_event_venue
+                ):
+
+                    already_exists = True
+                    break
+
+    if already_exists:
+
+        helpers.print_separator()
+        print("\nParticipant already exists in this event.\n")
+        helpers.print_separator()
+        return
+
     lines[real_index] = new_name + "|" + new_event + "\n"
 
     file = open("participants.txt", "w")
@@ -153,12 +198,6 @@ def update_participant():
                 attendance_date == old_date and
                 attendance_venue == old_venue
             ):
-
-                new_event_parts = new_event.split("|")
-
-                new_event_name = new_event_parts[0].strip()
-                new_event_date = new_event_parts[1].strip()
-                new_event_venue = new_event_parts[2].strip()
 
                 attendance_lines[i] = (
                     new_name + "|" +
@@ -232,7 +271,7 @@ def update_event():
 
     helpers.new_line()
     helpers.print_line()
-    print("\nCurrent Event Name : " + current[0].strip())
+    print("\nCurrent Event      : " + current[0].strip())
     helpers.new_line()
     helpers.print_line()
     print("\nCurrent Date       : " + current[1].strip())
@@ -403,7 +442,7 @@ def update_attendance():
     helpers.print_separator()
     helpers.new_line()
     helpers.print_line()
-    print("\nCurrent Participant : " + current[0].strip())
+    print("\nCurrent Participant   : " + current[0].strip())
     helpers.new_line()
     helpers.print_line()
     print("\nCurrent Event         : " + current[1].strip())

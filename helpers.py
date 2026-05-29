@@ -126,7 +126,7 @@ def get_valid_attendance_rows(lines):
 
         parts = line.rstrip("\n").split("|")
 
-        if len(parts) >= 5:
+        if len(parts) >= 5 and parts[4].strip() != "":
 
             valid_rows.append(parts)
 
@@ -173,7 +173,7 @@ def get_valid_attendance_indexes(lines):
 
         parts = lines[i].rstrip("\n").split("|")
 
-        if len(parts) >= 5:
+        if len(parts) >= 5 and parts[4].strip() != "":
 
             valid_indexes.append(i)
 

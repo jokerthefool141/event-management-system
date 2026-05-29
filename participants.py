@@ -64,6 +64,39 @@ def register_participant():
         helpers.print_separator()
         return
 
+    file = open("participants.txt", "r")
+    participant_lines = file.readlines()
+    file.close()
+
+    already_exists = False
+
+    for line in participant_lines:
+
+        parts = line.strip().split("|")
+
+        if len(parts) >= 4:
+
+            existing_name = parts[0].strip()
+            existing_event = parts[1].strip()
+            existing_date = parts[2].strip()
+            existing_venue = parts[3].strip()
+
+            if (
+                existing_name == participant_name and
+                existing_event == selected_parts[0].strip() and
+                existing_date == selected_parts[1].strip() and
+                existing_venue == selected_parts[2].strip()
+            ):
+
+                already_exists = True
+                break
+
+    if already_exists:
+
+        print("\nParticipant is already registered for this event.\n")
+        helpers.print_separator()
+        return
+
     file = open("participants.txt", "a")
     file.write(participant_name + "|" + selected_event + "\n")
     file.close()
