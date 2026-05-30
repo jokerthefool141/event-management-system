@@ -329,7 +329,7 @@ def participant_menu():
         print("\n5.) Back to Main Menu\n")
         helpers.print_separator()
 
-        choice = input("\nEnter your choice: ").strip()
+        choice = input("\nEnter your choice: ")
         helpers.new_line()
 
         if choice == "1":
