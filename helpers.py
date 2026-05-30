@@ -126,9 +126,14 @@ def get_valid_attendance_rows(lines):
 
         parts = line.rstrip("\n").split("|")
 
-        if len(parts) >= 5 and parts[4].strip() != "":
+        if len(parts) >= 5:
 
-            valid_rows.append(parts)
+            if event_exists(
+                parts[1].strip(),
+                parts[2].strip(),
+                parts[3].strip()
+            ):
+                valid_rows.append(parts)
 
     return valid_rows
 
@@ -158,7 +163,11 @@ def get_valid_participant_rows(lines):
 
         if len(parts) >= 4:
 
-            valid_rows.append(parts)
+            if event_exists(
+                parts[1].strip(),
+                parts[2].strip(),                parts[3].strip()
+            ):
+                valid_rows.append(parts)
 
     return valid_rows
 
@@ -173,7 +182,7 @@ def get_valid_attendance_indexes(lines):
 
         parts = lines[i].rstrip("\n").split("|")
 
-        if len(parts) >= 5 and parts[4].strip() != "":
+        if len(parts) >= 5:
 
             valid_indexes.append(i)
 
@@ -215,3 +224,26 @@ def get_valid_participant_indexes(lines):
 def split_record(line):
 
     return line.strip().split("|")
+
+
+# Checks if an event exists in the events.txt file
+
+def event_exists(event_name, date, venue):
+
+    file = open("events.txt", "r")
+
+    for line in file:
+
+        parts = line.strip().split("|")
+
+        if len(parts) >= 3:
+
+            if (
+                parts[0].strip() == event_name and
+                parts[1].strip() == date and
+                parts[2].strip() == venue
+            ):
+
+                return True
+
+    return False
